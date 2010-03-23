@@ -5,13 +5,24 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "simple_publisher"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
-    gem.email = "dirk.breuer@gmail.com"
+    gem.summary = %Q{Defines a simple pub/sub layer for interaction with the Starling message queue.}
+    gem.description = <<-DESC
+More often than not you don't need a full fledged message queue like ActiveMQ
+or RabbitMQ with a full size message format. For simple asynchronous distribution
+tasks a very light weight persistent message queue like starling will be fine.
+Nevertheless you want a more sophisticated interface to interact with than a
+memcache interface. Simple Publisher tries to achieve exactly this: While using
+Starling as the queuing system in the background we provide a messaging terminology 
+well know and understood. The terminology is strongly inspired by JMS which is
+kind a defacto standard for messaging on the API-level.
+    DESC
+    gem.email = "dirk@galaxycats.com"
     gem.homepage = "http://github.com/galaxycats/simple_publisher"
     gem.authors = ["Dirk Breuer"]
+    
+    gem.add_dependency "starling"
+    
     gem.add_development_dependency "rspec", ">= 1.2.9"
-    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError

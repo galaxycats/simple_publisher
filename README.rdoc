@@ -1,6 +1,18 @@
 = simple_publisher
 
-Description goes here.
+Defines a simple pub/sub layer for interaction with the Starling message queue.
+
+== The Idea
+
+More often than not you don't need a full fledged message queue like ActiveMQ
+or RabbitMQ with a full size message format. For simple asynchronous
+distribution tasks a very light weight persistent message queue like starling
+will be fine. Nevertheless you want a more sophisticated interface to interact
+with than a memcache interface. Simple Publisher tries to achieve exactly
+this: While using Starling as the queuing system in the background we provide
+a messaging terminology well know and understood. The terminology is strongly
+inspired by JMS which is kind a defacto standard for messaging on the
+API-level.
 
 == Note on Patches/Pull Requests
  
