@@ -21,6 +21,7 @@ kind a defacto standard for messaging on the API-level.
     gem.authors = ["Dirk Breuer"]
     
     gem.add_dependency "starling"
+    gem.add_dependency "system_timer"
     
     gem.add_development_dependency "rspec", ">= 1.2.9"
   end
