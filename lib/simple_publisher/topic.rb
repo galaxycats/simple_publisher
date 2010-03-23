@@ -7,5 +7,14 @@ module SimplePublisher
         send("#{attr}=", value)
       end
     end
+    
+    def ==(other)
+      case other
+      when Topic
+        other.name == self.name
+      else
+        false
+      end
+    end
   end
 end
