@@ -1,8 +1,8 @@
-= simple_publisher
+# simple_publisher
 
 Defines a simple pub/sub layer for interaction with the Starling message queue.
 
-== The Idea
+## The Idea
 
 More often than not you don't need a full fledged message queue like ActiveMQ
 or RabbitMQ with a full size message format. For simple asynchronous
@@ -14,7 +14,7 @@ a messaging terminology well know and understood. The terminology is strongly
 inspired by JMS which is kind a defacto standard for messaging on the
 API-level.
 
-== Example
+## Example
 
 The Simple Publisher gem only helps you on the publisher site of message based
 connection (as the name already suggests). For the other side, the subscriber
@@ -76,7 +76,7 @@ drawback. You just have to now the convention.
 Of course you have to start both the Starling system process and the Workling-Client
 instances. They are located in the `scripts` folder of your Rails-App.
 
-== Note on Patches/Pull Requests
+## Note on Patches/Pull Requests
  
 * Fork the project.
 * Make your feature addition or bug fix.
@@ -86,6 +86,6 @@ instances. They are located in the `scripts` folder of your Rails-App.
   (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)
 * Send me a pull request. Bonus points for topic branches.
 
-== Copyright
+## Copyright
 
 Copyright (c) 2010 Dirk Breuer. See LICENSE for details.
