@@ -14,6 +14,68 @@ a messaging terminology well know and understood. The terminology is strongly
 inspired by JMS which is kind a defacto standard for messaging on the
 API-level.
 
+== Example
+
+The Simple Publisher gem only helps you on the publisher site of message based
+connection (as the name already suggests). For the other side, the subscriber
+you need to roll your own solution. But fortunately there are aleady a lot of
+options you could use. I would strongly recommend to have a look at the
+[Workling](http://github.com/purzelrakete/workling "purzelrakete's workling at
+master - GitHub") plugin. Originally designed to realize easy background
+process integration into any Rails app, we could simply facilitate it to
+receive messages published by a different app. The following examples shows
+what you have to do on both the publisher and subscriber site.
+
+First the publisher:
+
+    # Let's assume we build a distributed mailing service which will read abstract
+    # email-instances from a queue and deliver them asynchronously
+
+    # First: Define your Connection and Topic instances ...
+    topic      = SimplePublisher::Topic.new(:name => "mail_service_subscribers__deliver_mail") # As you will see, this maps to Worklings naming scheme
+    connection = SimplePublisher::StarlingConnection.new(:host => "127.0.0.1", :port => "22122") # this Starlings default port
+
+    # ... and now get a Publisher instance
+    publisher = SimplePublisher::Publisher.new(
+      :topic      => topic,
+      :connection => connection
+    )
+
+    # Now lets create our email object we want to deliver asynchronously
+    email = Email.new # this could be any kind of object, usually a simple type.
+                      # If you want to send complex objects over a message queue,
+                      # make sure the other side nows about those objects.
+    publisher.publish(email) # ... and publish it to starling
+    
+And here comes the subscriber, which is just another Rails-App:
+
+    # Inside our receiving Rails-App with the Workling plugin enabled we create a
+    # Workling class
+    class MailServiceSubscriber < Workling::Base
+
+      def deliver_mail(email)
+        begin
+          Notifier.send("deliver_#{email[:name_of_mail]}", email)
+          # Here we just call anything that will actually send the email out. The
+          # email object is the same we published on the other side.
+        rescue Exception => e
+          # it is usually a good idea to log any errors ...
+          Rails.logger.error "An Error occured: #{e.message} --- BACKTRACE:\n\t#{e.backtrace.join("\n\t")}"
+        end
+      end
+
+    end
+    
+Due to the fact, that Workling will listen on a topic that is dynamically
+created out of the Worklings class name and the single method inside it, we end
+up with a topic name like `mail_service_subscribers__deliver_mail` which refers
+to the Workling class `MailServiceSubscriber` and the method `deliver_mail`.
+You cannot configure the name of the topic using Workling but it is not a major
+drawback. You just have to now the convention.
+
+Of course you have to start both the Starling system process and the Workling-Client
+instances. They are located in the `scripts` folder of your Rails-App.
+
 == Note on Patches/Pull Requests
  
 * Fork the project.
