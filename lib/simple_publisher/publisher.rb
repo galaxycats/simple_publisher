@@ -12,6 +12,11 @@ module SimplePublisher
       end
     end
     
+    def publish(raw_message)
+      message = Message.new(raw_message)
+      connection.write(:message => message, :to => topic)
+    end
+    
     private
 
       attr_writer :topic, :connection

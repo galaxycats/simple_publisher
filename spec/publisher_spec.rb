@@ -30,6 +30,15 @@ module SimplePublisher
       lambda { publisher.topic = mock("another_topic") }.should raise_error(NoMethodError)
     end
     
+    it "should publish a message via the connection" do
+      publisher = Publisher.new(:topic => @topic, :connection => @connection)
+      
+      Message.should_receive(:new).with("message").and_return(message = mock("Message"))
+      @connection.should_receive(:write).with(:message => message, :to => @topic)
+      
+      publisher.publish("message")
+    end
+    
   end
   
 end
